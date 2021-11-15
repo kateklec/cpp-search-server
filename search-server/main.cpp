@@ -83,9 +83,10 @@ public:
     vector<Document> FindTopDocuments(const string& raw_query, Function function) const {
         const Query query = ParseQuery(raw_query);
         auto matched_documents = FindAllDocuments(query, function);
+        const auto err = 1e-6; // вынесла погрешность в константу
         sort(matched_documents.begin(), matched_documents.end(),
-            [](const Document& lhs, const Document& rhs) {
-                if (abs(lhs.relevance - rhs.relevance) < 1e-6) {
+            [err](const Document& lhs, const Document& rhs) {
+                if (abs(lhs.relevance - rhs.relevance) < err) {
                     return lhs.rating > rhs.rating;
                 }
                 else {
@@ -161,10 +162,7 @@ private:
         if (ratings.empty()) {
             return 0;
         }
-        int rating_sum = 0;
-        for (const int rating : ratings) {
-            rating_sum += rating;
-        }
+        auto rating_sum = accumulate(ratings.begin(), ratings.end(), 0); // использовала std::accumulate
         return rating_sum / static_cast<int>(ratings.size());
     }
 
