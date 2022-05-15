@@ -1,4 +1,4 @@
-﻿#include <cassert>
+#include <cassert>
 #include <cstddef>
 #include <iterator>
 #include <string>
@@ -50,9 +50,7 @@ class SingleLinkedList {
         // Конвертирующий конструктор/конструктор копирования
         // При ValueType, совпадающем с Type, играет роль копирующего конструктора
         // При ValueType, совпадающем с const Type, играет роль конвертирующего конструктора
-        BasicIterator(const BasicIterator<Type>& other) noexcept : BasicIterator(other.node_) {
-            // Реализуйте конструктор самостоятельно
-        }
+        BasicIterator(const BasicIterator<Type>& other) noexcept : BasicIterator(other.node_) {}
 
         BasicIterator& operator=(const BasicIterator& rhs) = default;
 
@@ -287,7 +285,6 @@ public:
     Iterator EraseAfter(ConstIterator pos) noexcept {
         Node* temp_node = pos.node_->next_node;
         pos.node_->next_node = pos.node_->next_node->next_node;
-        //head_.next_node = temp_node.next_node;
         delete temp_node;
         size_--;
         return Iterator(pos.node_->next_node);
